@@ -1,0 +1,56 @@
+{
+  "hotmilhas": {
+    "email": "eduardo.boca@gmail.com",
+    "senha": "eduBoca0",
+    "loginUrl": "https://api.hotmilhas.com.br/api/login",
+    "apiUrl": "https://api.hotmilhas.com.br/api/programs/check/points",
+    "requests": [
+      {
+        "program": {
+          "id": "1",
+          "name": "SMILES"
+        },
+        "points": [
+          100,
+          200,
+          300
+        ]
+      },
+      {
+        "program": {
+          "id": "2",
+          "name": "LATAM PASS"
+        },
+        "points": [
+          50,
+          100,
+          150,
+          300
+        ]
+      },
+      {
+        "program": {
+          "id": "3",
+          "name": "TUDO AZUL"
+        },
+        "points": [
+          50,
+          100,
+          150,
+          300
+        ]
+      },      
+      {
+        "program": {
+          "id": "8",
+          "name": "LATAM PASS Platinum/Black"
+        },
+        "points": [
+          50,
+          100,
+          150
+        ]
+      }      
+    ]
+  }
+}
