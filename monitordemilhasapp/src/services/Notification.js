@@ -52,7 +52,12 @@ const enviarNotificacoes = (programData) => {
   };
 
   //console.log('enviarNotificacoes disparado');
+
+  programData.forEach((program) => {
+    enviarNotificacao(program.nome, program.milhas, program.dias, program.valor);
+  });
   
+  /*
   Object.entries(programData).forEach(([programId, program]) => {
     const programName = program.name;
 
@@ -80,7 +85,7 @@ const enviarNotificacoes = (programData) => {
       });
     });
   }); 
-  
+  */
 
 };
 

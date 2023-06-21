@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; 
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import HomeScreen from '../components/HomeScreen';
 import SettingsScreen from '../components/SettingsScreen';
 import AlertsScreen from '../components/AlertsScreen';
+import ConfiguracaoAlerta from '../components/ConfiguracaoAlerta';
+import DebugScreen from '../components/DebugScreen'; // Import the DebugScreen component
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-const TabNavigator = ({ lastUpdate }) => {
+const TabNavigator = () => {
   return (
     <Tab.Navigator initialRouteName="Home">
       <Tab.Screen
@@ -43,16 +46,11 @@ const TabNavigator = ({ lastUpdate }) => {
           ),
         }}
       />
-
     </Tab.Navigator>
   );
 };
 
-const Stack = createStackNavigator();
-
 const AppNavigator = () => {
-  const [lastUpdate, setLastUpdate] = useState(null);
-
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -70,15 +68,41 @@ const AppNavigator = () => {
       >
         <Stack.Screen
           name="Tabs"
-          options={({ route }) => ({
-            headerTitle: () => (
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ fontSize: 16 }}>Monitor de Milhas</Text>
-              </View>
-            ),
-          })}
+          options={{
+            headerShown: false,
+          }}
         >
-          {() => <TabNavigator lastUpdate={lastUpdate} />}
+          {() => (
+            <Stack.Navigator>
+              <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
+              <Stack.Screen
+                name="ConfiguracaoAlerta"
+                component={ConfiguracaoAlerta}
+                options={({ route }) => ({
+                  title: 'Configurar Alerta',
+                  headerBackTitle: 'Voltar',
+                  headerRight: () => (
+                    <TouchableOpacity
+                      onPress={() => {
+                        if (route.params?.onSalvar) {
+                          route.params.onSalvar();
+                        }
+                      }}
+                    >
+                      <Text style={{ marginRight: 10, fontSize: 16 }}>Salvar</Text>
+                    </TouchableOpacity>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="Debug" // Add the Debug screen here
+                component={DebugScreen}
+                options={{
+                  title: 'Debug', // Set the title for the Debug screen
+                }}
+              />
+            </Stack.Navigator>
+          )}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

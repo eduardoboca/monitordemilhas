@@ -10,7 +10,15 @@ class Provedor extends EventEmitter {
 
   iniciarAtualizacaoMilhas() {
     //this.provedor.performLogin();
-    this.provedor.obterValoresMilhas();
+    this.provedor.obterValoresMilhas()
+    .then((data) => {
+      this.cachedData = data;
+      console.log('Dados de milhas atualizados()');
+
+      // Emitir evento personalizado          
+      this.emit('dadosAtualizados', this.cachedData);
+    })
+
     //console.log('Dados de milhas atualizados:', JSON.stringify(this.cachedData, null, 2))
     this.atualizarMilhasPeriodicamente();
   }
@@ -20,7 +28,7 @@ class Provedor extends EventEmitter {
       this.provedor.obterValoresMilhas()
         .then((data) => {
           this.cachedData = data;
-          //console.log('Dados de milhas atualizados:', JSON.stringify(this.cachedData, null, 2));
+          console.log('Dados de milhas atualizados(2):');
 
           // Emitir evento personalizado          
           this.emit('dadosAtualizados', this.cachedData);
@@ -28,10 +36,11 @@ class Provedor extends EventEmitter {
         .catch((error) => {
           console.error('Erro ao obter os valores de milhas:', error);
         });
-    }, 30000);
+    }, 30 * 60 * 1000);
   }
 
   obterDadosMilhas() {
+    console.log('Dados de milhas atualizados(1):', JSON.stringify(this.cachedData, null, 2));
     return this.cachedData;
   }
 }

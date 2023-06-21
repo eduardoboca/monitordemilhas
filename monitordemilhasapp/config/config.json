@@ -1,0 +1,28 @@
+{
+    "programs" : [
+        {
+          "program": {
+            "id": "1",
+            "name": "SMILES"
+          }
+        },
+        {
+          "program": {
+            "id": "2",
+            "name": "LATAM PASS"
+          }
+        },
+        {
+          "program": {
+            "id": "3",
+            "name": "TUDO AZUL"
+          }
+        },      
+        {
+          "program": {
+            "id": "8",
+            "name": "LATAM PASS Platinum/Black"
+          }
+        }      
+      ]
+}

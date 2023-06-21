@@ -75,7 +75,7 @@ class Hotmilhas {
         }
       }
 
-      //console.log('Dados de milhas atualizados:', JSON.stringify(valoresMilhas, null, 2))
+      console.log('Dados de milhas atualizados (3)');
       return valoresMilhas;
     } catch (error) {
       console.error('Erro ao obter os valores de milhas:', error);

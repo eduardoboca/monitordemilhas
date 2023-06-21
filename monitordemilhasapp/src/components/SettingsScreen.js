@@ -1,67 +1,74 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const SettingsScreen = () => {
-  const [configValues, setConfigValues] = useState([]);
+const SettingsScreen = ({ navigation }) => {
   const [login, setLogin] = useState('');
   const [senha, setSenha] = useState('');
+  const [enderecoServidor, setEnderecoServidor] = useState('');
 
-  const addConfigValue = () => {
-    const newConfigValue = {
-      programa: '',
-      milhas: 0,
-      dias: 0,
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const configString = await AsyncStorage.getItem('config');
+        if (configString) {
+          const config = JSON.parse(configString);
+          setLogin(config.login);
+          setSenha(config.senha);
+          setEnderecoServidor(config.enderecoServidor);
+        }
+      } catch (error) {
+        console.log('Erro ao ler as configurações:', error);
+      }
     };
-    setConfigValues([...configValues, newConfigValue]);
-  };
 
-  const removeConfigValue = (index) => {
-    const updatedConfigValues = [...configValues];
-    updatedConfigValues.splice(index, 1);
-    setConfigValues(updatedConfigValues);
-  };
+    fetchConfig();
+  }, []);
 
-  const renderConfigItem = ({ item, index }) => {
-    return (
-      <TouchableOpacity
-        style={styles.configItem}
-        onPress={() => removeConfigValue(index)}
-      >
-        <Text style={styles.programa}>{item.programa}</Text>
-        <Text style={styles.milhas}>{`${item.milhas} milhas`}</Text>
-        <Text style={styles.dias}>{`${item.dias} dias`}</Text>
-      </TouchableOpacity>
-    );
+  const saveConfig = async () => {
+    try {
+      const config = {
+        login,
+        senha,
+        enderecoServidor,
+      };
+      await AsyncStorage.setItem('config', JSON.stringify(config));
+      console.log('Configurações salvas:', config);
+
+      navigation.goBack();
+    } catch (error) {
+      console.log('Erro ao salvar as configurações:', error);
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.loginContainer}>
-        <Text>Login:</Text>
+        <Text>Login na Hotmilhas:</Text>
         <TextInput
           style={styles.input}
           value={login}
           onChangeText={setLogin}
         />
 
-        <Text>Senha:</Text>
+        <Text>Senha na Hotmilhas:</Text>
         <TextInput
           style={styles.input}
           value={senha}
           onChangeText={setSenha}
           secureTextEntry
         />
+
+        <Text>Endereço do servidor de milhas:</Text>
+        <TextInput
+          style={styles.input}
+          value={enderecoServidor}
+          onChangeText={setEnderecoServidor}
+        />
       </View>
 
-      <FlatList
-        data={configValues}
-        renderItem={renderConfigItem}
-        keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={styles.listContent}
-      />
-
-      <TouchableOpacity style={styles.addButton} onPress={addConfigValue}>
-        <Text style={styles.addButtonText}>Adicionar</Text>
+      <TouchableOpacity style={styles.saveButton} onPress={saveConfig}>
+        <Text style={styles.saveButtonText}>Salvar Configurações</Text>
       </TouchableOpacity>
     </View>
   );
@@ -71,28 +78,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-  },
-  listContent: {
-    flexGrow: 1,
-  },
-  configItem: {
-    backgroundColor: '#ffffff',
-    marginBottom: 8,
-    padding: 16,
-    borderRadius: 8,
-    elevation: 2,
-  },
-  programa: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  milhas: {
-    fontSize: 16,
-    marginBottom: 4,
-  },
-  dias: {
-    fontSize: 16,
   },
   loginContainer: {
     marginBottom: 16,
@@ -105,13 +90,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingHorizontal: 8,
   },
-  addButton: {
+  saveButton: {
     backgroundColor: '#007bff',
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
   },
-  addButtonText: {
+  saveButtonText: {
     color: '#ffffff',
     fontSize: 16,
     fontWeight: 'bold',
