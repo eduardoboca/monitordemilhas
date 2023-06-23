@@ -12,7 +12,10 @@ const obterEnderecoIP = async () => {
 
 const connectSocket = (setData, setIsConnected, setReconnectionAttempts, setLastUpdate, setLogMsg) => {
   //const enderecoServidor = 'http://192.168.1.6:3000';
-  const enderecoServidor = 'http://ec2-user@ec2-3-21-35-143.us-east-2.compute.amazonaws.com/';
+  //const enderecoServidor = 'http://ec2-user@ec2-3-21-35-143.us-east-2.compute.amazonaws.com/';
+  const enderecoServidor = 'https://monitordemilhas.sleeker.pt/';
+
+  console.log(`Conectar ao servidor: ${enderecoServidor}`);
   const socket = io(enderecoServidor, { allowEIO3: true });
   
   /*

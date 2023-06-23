@@ -8,7 +8,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const Provedor = require('./provedores/provedor');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3030;
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

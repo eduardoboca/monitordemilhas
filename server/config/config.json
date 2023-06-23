@@ -1,7 +1,7 @@
 {
   "hotmilhas": {
     "email": "eduardo.boca@gmail.com",
-    "senha": "eduBoca0",
+    "senha": "eduBoc@0",
     "loginUrl": "https://api.hotmilhas.com.br/api/login",
     "apiUrl": "https://api.hotmilhas.com.br/api/programs/check/points",
     "requests": [
